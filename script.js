@@ -60,7 +60,7 @@ Horário: ${dados.horario}
 Expectativa: ${dados.expectativa}
   `;
 
-  const url = `https://wa.me/5511952716370?text=${encodeURIComponent(mensagem)}`;
+  const url = `https://wa.me/5511975817190?text=${encodeURIComponent(mensagem)}`;
   window.open(url, "_blank");
 
   alert("Orçamento enviado com sucesso! Protocolo: " + protocolo);
