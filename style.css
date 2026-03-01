@@ -1,54 +1,63 @@
-body {
-  font-family: Arial, sans-serif;
+/* Cabeçalho */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffffff; /* fundo branco */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* sombra sutil */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.logo img {
+  height: 50px; /* ajuste conforme necessário */
+}
+
+/* Menu principal */
+.menu ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
   margin: 0;
-  background: #f5f5f5;
+  padding: 0;
 }
 
-header {
-  background: linear-gradient(90deg, #0057b8, #ff7a00);
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.btn-whatsapp {
-  display: inline-block;
-  margin-top: 15px;
-  background: white;
-  color: #0057b8;
-  padding: 10px 20px;
+.menu a {
   text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
+  color: #333333;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
-.orcamento {
-  background: white;
-  padding: 30px;
-  max-width: 800px;
-  margin: 30px auto;
-  border-radius: 10px;
+.menu a:hover {
+  color: #ff6600; /* destaque ao passar o mouse */
 }
 
-form input,
-form select,
-form textarea,
-form button {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-form button {
-  background: #0057b8;
-  color: white;
-  border: none;
-  font-weight: bold;
+/* Ícone menu mobile */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
   cursor: pointer;
 }
 
-form button:hover {
-  background: #003f88;
+/* Responsivo */
+@media (max-width: 768px) {
+  .menu ul {
+    flex-direction: column;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: 70px;
+    width: 200px;
+    display: none; /* será mostrado com JS ao clicar no menu */
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .menu-toggle {
+    display: block;
+  }
 }
