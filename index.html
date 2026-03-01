@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Abel Remoções | Ambulância em São Paulo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>Abel Remoções</h1>
+  <p>Atendimento em São Paulo e cidades próximas</p>
+  <a href="https://wa.me/5511952716370" target="_blank" class="btn-whatsapp">
+    Solicitar pelo WhatsApp
+  </a>
+</header>
+
+<section class="orcamento">
+  <h2>Solicitar Orçamento</h2>
+
+  <form id="formOrcamento">
+
+    <select name="tipoServico" required>
+      <option value="">Selecione o tipo de serviço</option>
+      <option value="Remoção">Remoção</option>
+      <option value="Evento">Cobertura de Evento</option>
+    </select>
+
+    <input type="text" name="nomePaciente" placeholder="Nome do Paciente">
+    <input type="date" name="dataNascimento">
+    <input type="number" name="peso" placeholder="Peso (kg)">
+    <input type="text" name="condicao" placeholder="Doença / Condição">
+    <input type="text" name="equipamentos" placeholder="Equipamentos necessários">
+
+    <input type="text" name="contratante" placeholder="Nome do Contratante" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <input type="text" name="telefone" placeholder="Telefone / WhatsApp" required>
+
+    <input type="text" name="origem" placeholder="Origem">
+    <input type="text" name="destino" placeholder="Destino">
+    <input type="datetime-local" name="horario">
+
+    <textarea name="expectativa" placeholder="O que você espera do serviço?" required></textarea>
+
+    <button type="submit">Enviar Orçamento</button>
+
+  </form>
+</section>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
