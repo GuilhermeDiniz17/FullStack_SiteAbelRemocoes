@@ -1,16 +1,40 @@
-<!-- Cabeçalho -->
-<header class="header">
-  <div class="logo">
-    <img src="assets/logo.jpg" alt="Abel Remoções">
-  </div>
-  <nav class="menu">
-    <ul>
-      <li><a href="#inicio">Início</a></li>
-      <li><a href="#servicos">Nossos Serviços</a></li>
-      <li><a href="#quem-somos">Quem Somos</a></li>
-      <li><a href="#contato">Contato</a></li>
-    </ul>
-  </nav>
-  <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abel Remoções</title>
+  <!-- Link correto do CSS -->
   <link rel="stylesheet" href="style.css">
-</header>
+</head>
+<body>
+
+  <!-- Cabeçalho -->
+  <header class="header">
+    <div class="logo">
+      <img src="assets/logo.jpg" alt="Abel Remoções">
+    </div>
+    <nav class="menu">
+      <ul>
+        <li><a href="#inicio">Início</a></li>
+        <li><a href="#servicos">Nossos Serviços</a></li>
+        <li><a href="#quem-somos">Quem Somos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+  </header>
+
+  <!-- Restante do conteúdo -->
+
+  <!-- JS para menu mobile -->
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.querySelector('.menu ul');
+
+    menuToggle.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+  </script>
+</body>
+</html>
