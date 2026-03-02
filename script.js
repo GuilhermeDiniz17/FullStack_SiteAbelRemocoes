@@ -1,9 +1,11 @@
-// Inicialização Firebase
+// ===============================
+// FIREBASE
+// ===============================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDQeHWz1ZGNkm67ZPNjo5Hh6VIH05GN9Z4",
+  apiKey: "SUA_API_KEY",
   authDomain: "abel-remocoes.firebaseapp.com",
   projectId: "abel-remocoes",
   storageBucket: "abel-remocoes.firebasestorage.app",
@@ -14,203 +16,230 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Função gerar protocolo
+// ===============================
+// FUNÇÕES AUXILIARES
+// ===============================
 function gerarProtocolo() {
   return "AB" + Date.now();
 }
 
-// Função validar e-mail
 function validarEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
 
 // ===============================
-// CAMPOS DINÂMICOS
+// CACHE CEP
+// ===============================
+const cacheCEP = {};
+
+// ===============================
+// BUSCAR CEP
+// ===============================
+async function buscarCEP(cepInput, prefixo) {
+
+  const cep = cepInput.value.replace(/\D/g, '');
+  if (cep.length !== 8) return;
+
+  const logradouro = document.getElementById(prefixo + "_logradouro");
+  const bairro = document.getElementById(prefixo + "_bairro");
+  const cidade = document.getElementById(prefixo + "_cidade");
+  const uf = document.getElementById(prefixo + "_uf");
+
+  function preencherCampos(dados) {
+    if (logradouro) {
+      logradouro.value = dados.logradouro || "";
+      logradouro.readOnly = true;
+    }
+    if (bairro) {
+      bairro.value = dados.bairro || "";
+      bairro.readOnly = true;
+    }
+    if (cidade) {
+      cidade.value = dados.localidade || "";
+      cidade.readOnly = true;
+    }
+    if (uf) {
+      uf.value = dados.uf || "";
+      uf.disabled = true;
+    }
+  }
+
+  if (cacheCEP[cep]) {
+    preencherCampos(cacheCEP[cep]);
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const dados = await resposta.json();
+
+    if (dados.erro) {
+      alert("CEP não encontrado.");
+      return;
+    }
+
+    cacheCEP[cep] = dados;
+    preencherCampos(dados);
+
+  } catch {
+    alert("Erro ao buscar CEP.");
+  }
+}
+
+// ===============================
+// MÁSCARA CEP
+// ===============================
+function aplicarMascaraCEP() {
+
+  const campos = document.querySelectorAll(".campo-cep");
+
+  campos.forEach(campo => {
+
+    campo.addEventListener("input", function () {
+      let valor = this.value.replace(/\D/g, "");
+
+      if (valor.length > 8) valor = valor.substring(0, 8);
+      if (valor.length > 5) valor = valor.replace(/^(\d{5})(\d)/, "$1-$2");
+
+      this.value = valor;
+    });
+
+    campo.addEventListener("blur", function () {
+      const cep = this.value.replace(/\D/g, "");
+      if (cep.length === 8) {
+        buscarCEP(this, this.dataset.prefixo);
+      }
+    });
+
+  });
+}
+
+// ===============================
+// DOM READY
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
 
   const servicoSelect = document.getElementById("servico");
   const camposDinamicos = document.getElementById("campos-dinamicos");
+  const form = document.getElementById("form-contato");
 
   const campos = {
 
     "eventos": `
       <div class="form-group">
-        <label for="evento">Nome do Evento:</label>
-        <input type="text" id="evento" name="evento" required>
+        <label>Nome do Evento:</label>
+        <input type="text" name="evento" required>
       </div>
 
       <div class="linha">
         <div class="form-group">
-          <label for="data">Data:</label>
-          <input type="date" id="data" name="data" required>
+          <label>Data:</label>
+          <input type="date" name="data" required>
         </div>
 
         <div class="form-group">
-          <label for="hora-inicio">Horário Início:</label>
-          <input type="time" id="hora-inicio" name="hora-inicio" required>
+          <label>Horário Início:</label>
+          <input type="time" name="hora-inicio" required>
         </div>
 
         <div class="form-group">
-          <label for="hora-fim">Horário Término:</label>
-          <input type="time" id="hora-fim" name="hora-fim" required>
+          <label>Horário Fim:</label>
+          <input type="time" name="hora-fim" required>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="mensagem-evento">Mensagem:</label>
-        <textarea id="mensagem-evento" name="mensagem-evento"></textarea>
+        <label>Mensagem:</label>
+        <textarea name="mensagem-evento"></textarea>
       </div>
     `,
 
     "remocao-hospitalar": `
       <div class="linha">
-        <div class="form-group cep">
+        <div class="form-group">
           <label>CEP:</label>
-          <input type="text" class="campo-cep" data-prefixo="origem" maxlength="9" required>
+          <input type="text" 
+                 id="origem_cep" 
+                 class="campo-cep" 
+                 data-prefixo="origem"
+                 maxlength="9"
+                 placeholder="00000-000"
+                 required>
         </div>
 
-        <div class="form-group logradouro">
+        <div class="form-group">
           <label>Logradouro:</label>
-          <input type="text" id="origem-logradouro" required>
+          <input type="text" id="origem_logradouro" required>
         </div>
 
-        <div class="form-group numero">
+        <div class="form-group">
           <label>Número:</label>
-          <input type="text" id="origem-numero" required>
+          <input type="text" name="origem-numero">
         </div>
       </div>
 
       <div class="linha">
-        <div class="form-group complemento">
-          <label>Complemento:</label>
-          <input type="text" id="origem-complemento">
-        </div>
-
-        <div class="form-group bairro">
+        <div class="form-group">
           <label>Bairro:</label>
-          <input type="text" id="origem-bairro" required>
+          <input type="text" id="origem_bairro" required>
         </div>
 
-        <div class="form-group cidade">
+        <div class="form-group">
           <label>Cidade:</label>
-          <input type="text" id="origem-cidade" required>
+          <input type="text" id="origem_cidade" required>
         </div>
 
-        <div class="form-group uf">
+        <div class="form-group">
           <label>UF:</label>
-          <input type="text" id="origem-uf" required>
+          <select id="origem_uf" required>
+            <option value="">UF</option>
+            <option value="SP">SP</option>
+            <option value="RJ">RJ</option>
+            <option value="MG">MG</option>
+            <option value="ES">ES</option>
+          </select>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="mensagem-hospital">Mensagem:</label>
-        <textarea id="mensagem-hospital"></textarea>
+        <label>Mensagem:</label>
+        <textarea name="mensagem-hospital"></textarea>
       </div>
     `,
 
     "remocao-paciente": `
       <div class="form-group">
-        <label for="nome-paciente">Nome do Paciente:</label>
-        <input type="text" id="nome-paciente" required>
+        <label>Nome do Paciente:</label>
+        <input type="text" name="nome-paciente" required>
       </div>
 
       <div class="form-group">
-        <label for="diagnostico">Diagnóstico:</label>
-        <input type="text" id="diagnostico" required>
+        <label>Diagnóstico:</label>
+        <input type="text" name="diagnostico" required>
       </div>
 
       <div class="form-group">
-        <label for="mensagem-paciente">Mensagem:</label>
-        <textarea id="mensagem-paciente"></textarea>
+        <label>Mensagem:</label>
+        <textarea name="mensagem-paciente"></textarea>
       </div>
     `
   };
 
-  // ===============================
-  // EVENTO DE TROCA DE SERVIÇO
-  // ===============================
-  servicoSelect.addEventListener("change", () => {
-
-    const servico = servicoSelect.value;
-
-    // Insere os campos
-    camposDinamicos.innerHTML = campos[servico] || "";
-
-    // 🔥 Ativa automaticamente os eventos do CEP
-    ativarEventosCEP();
-
-  });
-
-  // ===============================
-  // FUNÇÃO PARA ATIVAR EVENTO DO CEP
-  // ===============================
-  function ativarEventosCEP() {
-
-    const ceps = document.querySelectorAll(".campo-cep");
-
-    ceps.forEach(campo => {
-
-      // Máscara automática
-      campo.addEventListener("input", function () {
-        let valor = this.value.replace(/\D/g, "");
-
-        if (valor.length > 5) {
-          valor = valor.replace(/^(\d{5})(\d)/, "$1-$2");
-        }
-
-        this.value = valor;
-      });
-
-      // Busca CEP ao sair do campo
-      campo.addEventListener("blur", function () {
-
-        const cep = this.value.replace(/\D/g, "");
-
-        if (cep.length === 8) {
-          const prefixo = this.dataset.prefixo;
-          buscarCEP(cep, prefixo);
-        }
-
-      });
-
-    });
-
-  }
-
-});
-
   function atualizarCampos(servico) {
     camposDinamicos.innerHTML = campos[servico] || "";
+    aplicarMascaraCEP();
   }
 
-  // Evento select
   servicoSelect.addEventListener("change", (e) => {
     atualizarCampos(e.target.value);
-    camposDinamicos.scrollIntoView({ behavior: "smooth" });
   });
 
-  // Evento cards
-  const cards = document.querySelectorAll(".cards-servicos .card");
-  cards.forEach(card => {
-    card.addEventListener("click", () => {
-      const titulo = card.querySelector("h3").textContent.toLowerCase().trim();
-      let valor = "";
-      if (titulo.includes("evento")) valor = "eventos";
-      if (titulo.includes("hospitalar")) valor = "remocao-hospitalar";
-      if (titulo.includes("pacientes")) valor = "remocao-paciente";
-
-      if(valor) {
-        servicoSelect.value = valor;
-        atualizarCampos(valor);
-        camposDinamicos.scrollIntoView({ behavior: "smooth" });
-      }
-    });
-  });
-
-  // Evento submit formulário
+  // ===============================
+  // SUBMIT
+  // ===============================
   form.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
     const dados = Object.fromEntries(new FormData(form));
@@ -221,6 +250,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const camposCEP = document.querySelectorAll(".campo-cep");
+    for (let campo of camposCEP) {
+      const valor = campo.value.replace(/\D/g, '');
+      if (valor.length !== 8) {
+        alert("Preencha o CEP corretamente.");
+        campo.focus();
+        return;
+      }
+    }
+
     const dadosComProtocolo = {
       ...dados,
       protocolo,
@@ -229,51 +268,28 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     try {
+
       await addDoc(collection(db, "orcamentos"), dadosComProtocolo);
 
-      // Monta mensagem WhatsApp organizada
-      let mensagem = `🚑 *Novo Orçamento - Abel Remoções*\nProtocolo: ${protocolo}\n\n`;
-      mensagem += `Nome: ${dados.nome}\nTelefone: ${dados.telefone}\nEmail: ${dados.email}\nServiço: ${dados.servico}\n\n`;
-
-      if(dados.servico === "eventos") {
-        mensagem += `📌 Nome do Evento: ${dados.evento || "-"}\n📅 Data: ${dados.data || "-"}\n⏰ Horário: ${dados.hora || "-"}\n📝 Mensagem: ${dados["mensagem-evento"] || "-"}\n`;
-      }
-      if(dados.servico === "remocao-hospitalar") {
-        mensagem += `📌 Endereço de Origem: ${dados["endereco-origem"] || "-"}\n📍 Endereço de Destino: ${dados["endereco-destino"] || "-"}\n📝 Mensagem: ${dados["mensagem-hospital"] || "-"}\n`;
-      }
-      if(dados.servico === "remocao-paciente") {
-        mensagem += `📌 Nome do Paciente: ${dados["nome-paciente"] || "-"}\n💉 Diagnóstico: ${dados.diagnostico || "-"}\n📝 Mensagem: ${dados["mensagem-paciente"] || "-"}\n`;
-      }
+      let mensagem = `🚑 *Novo Orçamento - Abel Remoções*\n`;
+      mensagem += `Protocolo: ${protocolo}\n\n`;
+      mensagem += `Nome: ${dados.nome}\n`;
+      mensagem += `Telefone: ${dados.telefone}\n`;
+      mensagem += `Email: ${dados.email}\n`;
+      mensagem += `Serviço: ${dados.servico}\n`;
 
       const url = `https://wa.me/5511975817190?text=${encodeURIComponent(mensagem)}`;
       window.open(url, "_blank");
 
       alert("Orçamento enviado com sucesso! Protocolo: " + protocolo);
+
       form.reset();
       camposDinamicos.innerHTML = "";
+
     } catch (error) {
-      console.error("Erro ao enviar:", error);
-      alert("Houve um erro ao enviar o orçamento. Tente novamente.");
+      alert("Erro ao enviar orçamento.");
     }
+
   });
+
 });
-
-async function buscarCEP(cepInput, prefixo) {
-  const cep = cepInput.value.replace(/\D/g, '');
-
-  if (cep.length !== 8) return;
-
-  try {
-    const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const dados = await resposta.json();
-
-    if (!dados.erro) {
-      document.getElementById(prefixo + "_logradouro").value = dados.logradouro || "";
-      document.getElementById(prefixo + "_bairro").value = dados.bairro || "";
-      document.getElementById(prefixo + "_cidade").value = dados.localidade || "";
-      document.getElementById(prefixo + "_uf").value = dados.uf || "";
-    }
-  } catch (erro) {
-    console.log("Erro ao buscar CEP");
-  }
-}
