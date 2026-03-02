@@ -1,40 +1,187 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Abel Remoções</title>
-  <!-- Link correto do CSS -->
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abel Remoções - Início</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
 
-  <!-- Cabeçalho -->
-  <header class="header">
-    <div class="logo">
-      <img src="assets/logo.jpg" alt="Abel Remoções">
-    </div>
-    <nav class="menu">
-      <ul>
-        <li><a href="#inicio">Início</a></li>
-        <li><a href="#servicos">Nossos Serviços</a></li>
-        <li><a href="#quem-somos">Quem Somos</a></li>
-        <li><a href="#contato">Contato</a></li>
-      </ul>
-    </nav>
-    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-  </header>
+    <!-- Cabeçalho -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-header">
+          <img src="assets/logo.jpeg" alt="Abel Remoções" class="logo_abel">
+        </div>
 
-  <!-- Restante do conteúdo -->
+        <nav class="menu">
+          <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#servicos">Nossos Serviços</a></li>
+            <li><a href="#quem-somos">Quem Somos</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
-  <!-- JS para menu mobile -->
-  <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.querySelector('.menu ul');
+    <!-- Seção Hero -->
+    <section id="inicio" class="inicio-hero">
+      <div class="container-hero">
+        <div class="hero-img hero-left">
+          <img src="assets/ambulancia.png" alt="Ambulância estilizada">
+        </div>
 
-    menuToggle.addEventListener('click', () => {
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    });
-  </script>
-</body>
+        <div class="hero-text">
+          <h1>Serviço de Ambulância Profissional em São Paulo</h1>
+          <p>
+            <span class="atendimento-24h">Atendimentos 24h!</span><br>
+            Remoções com rapidez e segurança além de oferecemos suporte médico completo para garantir que seu evento ocorra com total segurança e tranquilidade.<br>
+            Atuamos na capital, litoral e interior de São Paulo.
+          </p>
+          <a href="#servicos" class="btn">Solicitar Serviço</a>
+        </div>
+
+        <div class="hero-img hero-right">
+          <img src="assets/mapa-sp.png" alt="Mapa de São Paulo estilizado">
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Nossos Serviços -->
+    <section id="servicos" class="servicos">
+      <div class="container">
+        <h2>Nossos Serviços</h2>
+        <div class="cards-servicos">
+          <div class="card">
+            <img src="assets/calendar.png" alt="Cobertura de Eventos">
+            <h3>Cobertura de Eventos</h3>
+            <p>Ambulância disponível para eventos, garantindo atendimento rápido e seguro.</p>
+          </div>
+          <div class="card">
+            <img src="assets/hospital.png" alt="Remoção Hospitalar">
+            <h3>Remoção Hospitalar</h3>
+            <p>Transporte seguro de pacientes entre hospitais.</p>
+          </div>
+          <div class="card">
+            <img src="assets/house.png" alt="Remoção de Pacientes">
+            <h3>Remoção de Pacientes</h3>
+            <p>Serviço de remoção de pacientes de forma organizada, rápida e segura, com conforto e equipe preparada.</p>
+          </div>
+        </div>
+        <p class="observacao">Todos os serviços são com ambulância básica, sem suporte para UTI.</p>
+      </div>
+    </section>
+
+    <!-- Seção Quem Somos -->
+    <section id="quem-somos" class="quem-somos">
+      <div class="container">
+        <h2>Quem Somos</h2>
+        <p class="slogan">"Quando a gente cuida da dor do outro, Deus cuida da dor da gente"</p>
+
+        <div class="sobre-nos">
+          <div class="item">
+            <h3>Nossa História</h3>
+            <p>Fundada há mais de 10 anos, a Abel Remoções nasceu com o propósito de oferecer transporte seguro e rápido de pacientes na capital, litoral e interior de São Paulo. Desde o primeiro atendimento, buscamos unir profissionalismo, cuidado e atenção a cada paciente.</p>
+          </div>
+          <div class="item">
+            <h3>Missão</h3>
+            <p>Garantir que cada pessoa atendida receba transporte com segurança, eficiência e respeito, proporcionando tranquilidade para familiares e organizadores de eventos.</p>
+          </div>
+          <div class="item">
+            <h3>Visão</h3>
+            <p>Ser referência em serviços de ambulância básica no estado de São Paulo, reconhecida pela qualidade, confiança e compromisso com a vida.</p>
+          </div>
+          <div class="item">
+            <h3>Valores</h3>
+            <ul>
+              <li>Humanização no atendimento</li>
+              <li>Segurança em primeiro lugar</li>
+              <li>Rapidez e eficiência</li>
+              <li>Compromisso com a vida</li>
+              <li>Transparência e ética</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section class="contato" id="contato">
+      <div class="container">
+        <h2>Entre em Contato</h2>
+        <p>Preencha suas informações e selecione o serviço desejado:</p>
+
+        <form id="form-contato">
+          <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+          </div>
+
+          <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="servico">Selecione o Serviço:</label>
+            <select id="servico" name="servico" required>
+              <option value="">-- Selecione --</option>
+              <option value="eventos">Cobertura de Eventos</option>
+              <option value="remocao-hospitalar">Remoção Hospitalar</option>
+              <option value="remocao-paciente">Remoção de Pacientes</option>
+            </select>
+          </div>
+
+          <div id="campos-dinamicos"></div>
+
+          <button type="submit" class="btn">Enviar</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="footer-column">
+          <h4>Nossos Serviços</h4>
+          <ul>
+            <li><a href="#servicos">Cobertura de Eventos</a></li>
+            <li><a href="#servicos">Remoção Hospitalar</a></li>
+            <li><a href="#servicos">Remoção de Pacientes</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Quem Somos</h4>
+          <ul>
+            <li><a href="#quem-somos">Nossa História</a></li>
+            <li><a href="#quem-somos">Missão</a></li>
+            <li><a href="#quem-somos">Visão</a></li>
+            <li><a href="#quem-somos">Valores</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Contato</h4>
+          <p><img src="assets/telefone.png" alt="" class="logo2">(11) 97581-7190</p>
+          <p><img src="assets/localizacao.png" alt="" class="logo2">Vila Diva, Sapopemba, próximo ao AMA/UBS Integrada Vila Oratório</p>
+          <div class="social-icons">
+            <img src="assets/whatsapp.png" alt="WhatsApp" class="logo">
+            <img src="assets/facebook.png" alt="Facebook" class="logo">
+            <a href="https://www.instagram.com/abelremocoes/" target="_blank"><img src="assets/instagram.png" alt="Instagram" class="logo"></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copy">
+        <p>© Abel Remoções 2026</p>
+      </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
