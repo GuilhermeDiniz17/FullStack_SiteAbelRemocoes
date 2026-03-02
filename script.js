@@ -1,9 +1,7 @@
-// script.js
-
+// Inicialização Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDQeHWz1ZGNkm67ZPNjo5Hh6VIH05GN9Z4",
   authDomain: "abel-remocoes.firebaseapp.com",
@@ -16,23 +14,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Funções auxiliares
+// Função gerar protocolo
 function gerarProtocolo() {
   return "AB" + Date.now();
 }
 
+// Função validar e-mail
 function validarEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
 
+// ===============================
+// CAMPOS DINÂMICOS
+// ===============================
 document.addEventListener("DOMContentLoaded", () => {
 
   const servicoSelect = document.getElementById("servico");
   const camposDinamicos = document.getElementById("campos-dinamicos");
-  const form = document.getElementById("form-contato");
 
-  // Campos dinâmicos
   const campos = {
 
     "eventos": `
@@ -40,115 +40,146 @@ document.addEventListener("DOMContentLoaded", () => {
         <label for="evento">Nome do Evento:</label>
         <input type="text" id="evento" name="evento" required>
       </div>
-      <div class="form-group">
-        <label for="data">Data:</label>
-        <input type="date" id="data" name="data" required>
+
+      <div class="linha">
+        <div class="form-group">
+          <label for="data">Data:</label>
+          <input type="date" id="data" name="data" required>
+        </div>
+
+        <div class="form-group">
+          <label for="hora-inicio">Horário Início:</label>
+          <input type="time" id="hora-inicio" name="hora-inicio" required>
+        </div>
+
+        <div class="form-group">
+          <label for="hora-fim">Horário Término:</label>
+          <input type="time" id="hora-fim" name="hora-fim" required>
+        </div>
       </div>
+
       <div class="form-group">
-        <label for="horaInicio">Horário Início:</label>
-        <input type="time" id="horaInicio" name="horaInicio" required>
-      </div>
-      <div class="form-group">
-        <label for="horaFim">Horário Fim:</label>
-        <input type="time" id="horaFim" name="horaFim" required>
-      </div>
-      <div class="form-group">
-        <label>Endereço do Evento:</label>
-        <input type="text" id="cep" name="cep" placeholder="CEP" required>
-        <input type="text" id="logradouro" name="logradouro" placeholder="Logradouro" required>
-        <input type="text" id="numero" name="numero" placeholder="Número" required>
-        <input type="text" id="complemento" name="complemento" placeholder="Complemento (opcional)">
-        <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
-        <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
-        <input type="text" id="uf" name="uf" placeholder="UF" required>
-      </div>
-      <div class="form-group">
-        <label for="mensagem">Mensagem:</label>
-        <textarea id="mensagem" name="mensagem" placeholder="Informações adicionais (opcional)"></textarea>
+        <label for="mensagem-evento">Mensagem:</label>
+        <textarea id="mensagem-evento" name="mensagem-evento"></textarea>
       </div>
     `,
 
     "remocao-hospitalar": `
-      <div class="form-group">
-        <label>Endereço de Origem:</label>
-        <input type="text" id="cepOrigem" name="cepOrigem" placeholder="CEP" required>
-        <input type="text" id="logradouroOrigem" name="logradouroOrigem" placeholder="Logradouro" required>
-        <input type="text" id="numeroOrigem" name="numeroOrigem" placeholder="Número" required>
-        <input type="text" id="complementoOrigem" name="complementoOrigem" placeholder="Complemento (opcional)">
-        <input type="text" id="bairroOrigem" name="bairroOrigem" placeholder="Bairro" required>
-        <input type="text" id="cidadeOrigem" name="cidadeOrigem" placeholder="Cidade" required>
-        <input type="text" id="ufOrigem" name="ufOrigem" placeholder="UF" required>
+      <div class="linha">
+        <div class="form-group cep">
+          <label>CEP:</label>
+          <input type="text" class="campo-cep" data-prefixo="origem" maxlength="9" required>
+        </div>
+
+        <div class="form-group logradouro">
+          <label>Logradouro:</label>
+          <input type="text" id="origem-logradouro" required>
+        </div>
+
+        <div class="form-group numero">
+          <label>Número:</label>
+          <input type="text" id="origem-numero" required>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Endereço de Destino:</label>
-        <input type="text" id="cepDestino" name="cepDestino" placeholder="CEP" required>
-        <input type="text" id="logradouroDestino" name="logradouroDestino" placeholder="Logradouro" required>
-        <input type="text" id="numeroDestino" name="numeroDestino" placeholder="Número" required>
-        <input type="text" id="complementoDestino" name="complementoDestino" placeholder="Complemento (opcional)">
-        <input type="text" id="bairroDestino" name="bairroDestino" placeholder="Bairro" required>
-        <input type="text" id="cidadeDestino" name="cidadeDestino" placeholder="Cidade" required>
-        <input type="text" id="ufDestino" name="ufDestino" placeholder="UF" required>
+
+      <div class="linha">
+        <div class="form-group complemento">
+          <label>Complemento:</label>
+          <input type="text" id="origem-complemento">
+        </div>
+
+        <div class="form-group bairro">
+          <label>Bairro:</label>
+          <input type="text" id="origem-bairro" required>
+        </div>
+
+        <div class="form-group cidade">
+          <label>Cidade:</label>
+          <input type="text" id="origem-cidade" required>
+        </div>
+
+        <div class="form-group uf">
+          <label>UF:</label>
+          <input type="text" id="origem-uf" required>
+        </div>
       </div>
+
       <div class="form-group">
-        <label for="mensagemHospital">Mensagem:</label>
-        <textarea id="mensagemHospital" name="mensagemHospital" placeholder="Informações adicionais (opcional)"></textarea>
+        <label for="mensagem-hospital">Mensagem:</label>
+        <textarea id="mensagem-hospital"></textarea>
       </div>
     `,
 
     "remocao-paciente": `
       <div class="form-group">
-        <label for="nomePaciente">Nome do Paciente:</label>
-        <input type="text" id="nomePaciente" name="nomePaciente" required>
+        <label for="nome-paciente">Nome do Paciente:</label>
+        <input type="text" id="nome-paciente" required>
       </div>
-      <div class="form-group">
-        <label for="dataNascimento">Data de Nascimento:</label>
-        <input type="date" id="dataNascimento" name="dataNascimento" required>
-      </div>
-      <div class="form-group">
-        <label for="altura">Altura:</label>
-        <input type="text" id="altura" name="altura" placeholder="Ex: 1.75m" required>
-      </div>
-      <div class="form-group">
-        <label for="peso">Peso:</label>
-        <input type="text" id="peso" name="peso" placeholder="Ex: 70kg" required>
-      </div>
+
       <div class="form-group">
         <label for="diagnostico">Diagnóstico:</label>
-        <input type="text" id="diagnostico" name="diagnostico" required>
-      </div>
-      <div class="form-group">
-        <label for="condicaoAtual">Condição Atual:</label>
-        <input type="text" id="condicaoAtual" name="condicaoAtual" required>
+        <input type="text" id="diagnostico" required>
       </div>
 
       <div class="form-group">
-        <label>Endereço de Origem:</label>
-        <input type="text" id="cepOrigem" name="cepOrigem" placeholder="CEP" required>
-        <input type="text" id="logradouroOrigem" name="logradouroOrigem" placeholder="Logradouro" required>
-        <input type="text" id="numeroOrigem" name="numeroOrigem" placeholder="Número" required>
-        <input type="text" id="complementoOrigem" name="complementoOrigem" placeholder="Complemento (opcional)">
-        <input type="text" id="bairroOrigem" name="bairroOrigem" placeholder="Bairro" required>
-        <input type="text" id="cidadeOrigem" name="cidadeOrigem" placeholder="Cidade" required>
-        <input type="text" id="ufOrigem" name="ufOrigem" placeholder="UF" required>
-      </div>
-
-      <div class="form-group">
-        <label>Endereço de Destino:</label>
-        <input type="text" id="cepDestino" name="cepDestino" placeholder="CEP" required>
-        <input type="text" id="logradouroDestino" name="logradouroDestino" placeholder="Logradouro" required>
-        <input type="text" id="numeroDestino" name="numeroDestino" placeholder="Número" required>
-        <input type="text" id="complementoDestino" name="complementoDestino" placeholder="Complemento (opcional)">
-        <input type="text" id="bairroDestino" name="bairroDestino" placeholder="Bairro" required>
-        <input type="text" id="cidadeDestino" name="cidadeDestino" placeholder="Cidade" required>
-        <input type="text" id="ufDestino" name="ufDestino" placeholder="UF" required>
-      </div>
-
-      <div class="form-group">
-        <label for="mensagemPaciente">Mensagem:</label>
-        <textarea id="mensagemPaciente" name="mensagemPaciente" placeholder="Informações adicionais (opcional)"></textarea>
+        <label for="mensagem-paciente">Mensagem:</label>
+        <textarea id="mensagem-paciente"></textarea>
       </div>
     `
   };
+
+  // ===============================
+  // EVENTO DE TROCA DE SERVIÇO
+  // ===============================
+  servicoSelect.addEventListener("change", () => {
+
+    const servico = servicoSelect.value;
+
+    // Insere os campos
+    camposDinamicos.innerHTML = campos[servico] || "";
+
+    // 🔥 Ativa automaticamente os eventos do CEP
+    ativarEventosCEP();
+
+  });
+
+  // ===============================
+  // FUNÇÃO PARA ATIVAR EVENTO DO CEP
+  // ===============================
+  function ativarEventosCEP() {
+
+    const ceps = document.querySelectorAll(".campo-cep");
+
+    ceps.forEach(campo => {
+
+      // Máscara automática
+      campo.addEventListener("input", function () {
+        let valor = this.value.replace(/\D/g, "");
+
+        if (valor.length > 5) {
+          valor = valor.replace(/^(\d{5})(\d)/, "$1-$2");
+        }
+
+        this.value = valor;
+      });
+
+      // Busca CEP ao sair do campo
+      campo.addEventListener("blur", function () {
+
+        const cep = this.value.replace(/\D/g, "");
+
+        if (cep.length === 8) {
+          const prefixo = this.dataset.prefixo;
+          buscarCEP(cep, prefixo);
+        }
+
+      });
+
+    });
+
+  }
+
+});
 
   function atualizarCampos(servico) {
     camposDinamicos.innerHTML = campos[servico] || "";
@@ -157,9 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Evento select
   servicoSelect.addEventListener("change", (e) => {
     atualizarCampos(e.target.value);
+    camposDinamicos.scrollIntoView({ behavior: "smooth" });
   });
 
-  // Evento cards clicáveis
+  // Evento cards
   const cards = document.querySelectorAll(".cards-servicos .card");
   cards.forEach(card => {
     card.addEventListener("click", () => {
@@ -172,14 +204,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if(valor) {
         servicoSelect.value = valor;
         atualizarCampos(valor);
-        camposDinamicos.scrollIntoView({behavior:"smooth"});
+        camposDinamicos.scrollIntoView({ behavior: "smooth" });
       }
     });
   });
 
-  // Envio do formulário
+  // Evento submit formulário
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const dados = Object.fromEntries(new FormData(form));
     const protocolo = gerarProtocolo();
 
@@ -188,36 +221,59 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Montar mensagem WhatsApp
-    let mensagem = `🚑 *Novo Orçamento - Abel Remoções*\nProtocolo: ${protocolo}\nTipo: ${dados.servico}\nNome: ${dados.nome}\nTelefone: ${dados.telefone}\nEmail: ${dados.email}\n`;
+    const dadosComProtocolo = {
+      ...dados,
+      protocolo,
+      dataEnvio: new Date(),
+      status: "novo"
+    };
 
-    Object.keys(dados).forEach(key => {
-      if(!["nome","telefone","email","servico"].includes(key) && dados[key]) {
-        mensagem += `${key}: ${dados[key]}\n`;
-      }
-    });
-
-    // Abrir WhatsApp
-    const url = `https://wa.me/5511975817190?text=${encodeURIComponent(mensagem)}`;
-    window.open(url, "_blank");
-
-    // Salvar no Firebase
     try {
-      const dadosComProtocolo = {
-        ...dados,
-        protocolo,
-        dataEnvio: new Date(),
-        status: "novo"
-      };
       await addDoc(collection(db, "orcamentos"), dadosComProtocolo);
+
+      // Monta mensagem WhatsApp organizada
+      let mensagem = `🚑 *Novo Orçamento - Abel Remoções*\nProtocolo: ${protocolo}\n\n`;
+      mensagem += `Nome: ${dados.nome}\nTelefone: ${dados.telefone}\nEmail: ${dados.email}\nServiço: ${dados.servico}\n\n`;
+
+      if(dados.servico === "eventos") {
+        mensagem += `📌 Nome do Evento: ${dados.evento || "-"}\n📅 Data: ${dados.data || "-"}\n⏰ Horário: ${dados.hora || "-"}\n📝 Mensagem: ${dados["mensagem-evento"] || "-"}\n`;
+      }
+      if(dados.servico === "remocao-hospitalar") {
+        mensagem += `📌 Endereço de Origem: ${dados["endereco-origem"] || "-"}\n📍 Endereço de Destino: ${dados["endereco-destino"] || "-"}\n📝 Mensagem: ${dados["mensagem-hospital"] || "-"}\n`;
+      }
+      if(dados.servico === "remocao-paciente") {
+        mensagem += `📌 Nome do Paciente: ${dados["nome-paciente"] || "-"}\n💉 Diagnóstico: ${dados.diagnostico || "-"}\n📝 Mensagem: ${dados["mensagem-paciente"] || "-"}\n`;
+      }
+
+      const url = `https://wa.me/5511975817190?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, "_blank");
+
       alert("Orçamento enviado com sucesso! Protocolo: " + protocolo);
-    } catch (err) {
-      console.error("Erro ao salvar no Firebase:", err);
-      alert("Erro ao salvar o orçamento. Tente novamente.");
+      form.reset();
+      camposDinamicos.innerHTML = "";
+    } catch (error) {
+      console.error("Erro ao enviar:", error);
+      alert("Houve um erro ao enviar o orçamento. Tente novamente.");
     }
-
-    form.reset();
-    camposDinamicos.innerHTML = "";
   });
-
 });
+
+async function buscarCEP(cepInput, prefixo) {
+  const cep = cepInput.value.replace(/\D/g, '');
+
+  if (cep.length !== 8) return;
+
+  try {
+    const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const dados = await resposta.json();
+
+    if (!dados.erro) {
+      document.getElementById(prefixo + "_logradouro").value = dados.logradouro || "";
+      document.getElementById(prefixo + "_bairro").value = dados.bairro || "";
+      document.getElementById(prefixo + "_cidade").value = dados.localidade || "";
+      document.getElementById(prefixo + "_uf").value = dados.uf || "";
+    }
+  } catch (erro) {
+    console.log("Erro ao buscar CEP");
+  }
+}

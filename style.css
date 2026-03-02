@@ -464,3 +464,44 @@ html, main, section {
   .item { max-width: 100%; }
   .contato .container { padding: 0 15px; }
 }
+
+/* ==========================
+   CAMPOS EM LINHA - ENDEREÇO
+========================== */
+
+.endereco-grid-1,
+.endereco-grid-2,
+.data-hora-grid {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* CEP | Logradouro | Número */
+.endereco-grid-1 {
+  grid-template-columns: 140px 1fr 100px;
+}
+
+/* Complemento | Bairro | Cidade | UF */
+.endereco-grid-2 {
+  grid-template-columns: 1fr 2fr 2fr 90px;
+}
+
+/* Data | Hora Início | Hora Fim */
+.data-hora-grid {
+  grid-template-columns: 1fr 150px 150px;
+}
+
+/* Espaçamento entre blocos */
+.bloco-form {
+  margin-bottom: 20px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .endereco-grid-1,
+  .endereco-grid-2,
+  .data-hora-grid {
+    grid-template-columns: 1fr;
+  }
+}
