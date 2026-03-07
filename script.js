@@ -2,7 +2,11 @@
 // FIREBASE
 // ===============================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "SUA_API_KEY",
@@ -10,7 +14,7 @@ const firebaseConfig = {
   projectId: "abel-remocoes",
   storageBucket: "abel-remocoes.firebasestorage.app",
   messagingSenderId: "678084659954",
-  appId: "1:678084659954:web:c63e558b0749e0ab5e9e6b"
+  appId: "1:678084659954:web:c63e558b0749e0ab5e9e6b",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -37,8 +41,7 @@ const cacheCEP = {};
 // BUSCAR CEP
 // ===============================
 async function buscarCEP(cepInput, prefixo) {
-
-  const cep = cepInput.value.replace(/\D/g, '');
+  const cep = cepInput.value.replace(/\D/g, "");
   if (cep.length !== 8) return;
 
   const logradouro = document.getElementById(prefixo + "_logradouro");
@@ -81,7 +84,6 @@ async function buscarCEP(cepInput, prefixo) {
 
     cacheCEP[cep] = dados;
     preencherCampos(dados);
-
   } catch {
     alert("Erro ao buscar CEP.");
   }
@@ -91,11 +93,9 @@ async function buscarCEP(cepInput, prefixo) {
 // MÁSCARA CEP
 // ===============================
 function aplicarMascaraCEP() {
-
   const campos = document.querySelectorAll(".campo-cep");
 
-  campos.forEach(campo => {
-
+  campos.forEach((campo) => {
     campo.addEventListener("input", function () {
       let valor = this.value.replace(/\D/g, "");
 
@@ -111,7 +111,6 @@ function aplicarMascaraCEP() {
         buscarCEP(this, this.dataset.prefixo);
       }
     });
-
   });
 }
 
@@ -119,14 +118,12 @@ function aplicarMascaraCEP() {
 // DOM READY
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-
   const servicoSelect = document.getElementById("servico");
   const camposDinamicos = document.getElementById("campos-dinamicos");
   const form = document.getElementById("form-contato");
 
   const campos = {
-
-    "eventos": `
+    eventos: `
       <div class="form-group">
         <label>Nome do Evento:</label>
         <input type="text" name="evento" required>
@@ -223,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <label>Mensagem:</label>
         <textarea name="mensagem-paciente"></textarea>
       </div>
-    `
+    `,
   };
 
   function atualizarCampos(servico) {
@@ -239,7 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // SUBMIT
   // ===============================
   form.addEventListener("submit", async (e) => {
-
     e.preventDefault();
 
     const dados = Object.fromEntries(new FormData(form));
@@ -252,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const camposCEP = document.querySelectorAll(".campo-cep");
     for (let campo of camposCEP) {
-      const valor = campo.value.replace(/\D/g, '');
+      const valor = campo.value.replace(/\D/g, "");
       if (valor.length !== 8) {
         alert("Preencha o CEP corretamente.");
         campo.focus();
@@ -264,11 +260,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ...dados,
       protocolo,
       dataEnvio: new Date(),
-      status: "novo"
+      status: "novo",
     };
 
     try {
-
       await addDoc(collection(db, "orcamentos"), dadosComProtocolo);
 
       let mensagem = `🚑 *Novo Orçamento - Abel Remoções*\n`;
@@ -278,19 +273,15 @@ document.addEventListener("DOMContentLoaded", () => {
       mensagem += `Email: ${dados.email}\n`;
       mensagem += `Serviço: ${dados.servico}\n`;
 
-      const url = `https://wa.me/5511975817190?text=${encodeURIComponent(mensagem)}`;
+      const url = `https://wa.me/5511952716370?text=${encodeURIComponent(mensagem)}`;
       window.open(url, "_blank");
 
       alert("Orçamento enviado com sucesso! Protocolo: " + protocolo);
 
       form.reset();
       camposDinamicos.innerHTML = "";
-
     } catch (error) {
       alert("Erro ao enviar orçamento.");
     }
-
   });
-
 });
-

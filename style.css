@@ -1,23 +1,54 @@
 /* ==========================
+   Variáveis Globais
+========================== */
+
+:root {
+  /* cores principais */
+
+  --azul-principal: #007bff;
+  --azul-hover: #0056b3;
+  --laranja-destaque: #ff7b00;
+
+  /* textos */
+
+  --titulo-principal: #333;
+  --texto-normal: #555;
+
+  /* fundos */
+
+  --fundo-branco: #ffffff;
+  --fundo-cinza: #f9f9f9;
+  --fundo-site: #f5f5f5;
+}
+
+/* ==========================
    Reset e Corpo do Site
 ========================== */
 
-html{
-  scroll-behavior:smooth;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: Montserrat, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
-  height: 100%;
+  background-color: var(--fundo-site);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-html, main, section {
+main {
   flex: 1;
+}
+
+/* títulos padronizados */
+
+h1,
+h2,
+h3 {
+  color: var(--titulo-principal);
 }
 
 /* ==========================
@@ -25,13 +56,15 @@ html, main, section {
 ========================== */
 
 .header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: var(--fundo-branco);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 12px 0;
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
+  transition:
+    padding 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .header-inner {
@@ -43,27 +76,27 @@ html, main, section {
   align-items: center;
 }
 
-.logo-header{
-  display:flex;
-  align-items:center;
+.logo-header {
+  display: flex;
+  align-items: center;
 }
 
 .logo_abel {
   height: 60px;
   object-fit: contain;
   display: block;
-  transition: 0.3s;
+  transition: height 0.3s ease;
 }
 
 /* efeito ao rolar */
 
-.header.scrolled{
-  padding:8px 0;
-  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+.header.scrolled {
+  padding: 8px 0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.header.scrolled .logo_abel{
-  height:50px;
+.header.scrolled .logo_abel {
+  height: 50px;
 }
 
 /* ==========================
@@ -80,13 +113,13 @@ html, main, section {
 
 .menu a {
   text-decoration: none;
-  color: #333;
+  color: var(--titulo-principal);
   font-weight: 500;
   transition: color 0.3s;
 }
 
 .menu a:hover {
-  color: #ff6600;
+  color: var(--laranja-destaque);
 }
 
 /* ==========================
@@ -94,7 +127,7 @@ html, main, section {
 ========================== */
 
 .inicio-hero {
-  background-color: #ffffff;
+  background-color: var(--fundo-branco);
   padding: 80px 30px;
 }
 
@@ -123,12 +156,11 @@ html, main, section {
 .hero-text h1 {
   font-size: 2.3rem;
   margin-bottom: 15px;
-  color: #333;
 }
 
 .hero-text p {
   font-size: 1.1rem;
-  color: #555;
+  color: var(--texto-normal);
   margin-bottom: 25px;
   line-height: 1.6;
 }
@@ -136,7 +168,7 @@ html, main, section {
 .hero-text .btn {
   display: inline-block;
   padding: 12px 25px;
-  background-color: #007bff;
+  background-color: var(--azul-principal);
   color: #fff;
   text-decoration: none;
   font-weight: 600;
@@ -146,7 +178,7 @@ html, main, section {
 }
 
 .hero-text .btn:hover {
-  background-color: #0056b3;
+  background-color: var(--azul-hover);
 }
 
 /* ==========================
@@ -154,7 +186,7 @@ html, main, section {
 ========================== */
 
 .servicos {
-  background-color: #f9f9f9;
+  background-color: var(--fundo-cinza);
   padding: 80px 30px;
 }
 
@@ -167,7 +199,6 @@ html, main, section {
 .servicos h2 {
   font-size: 2.2rem;
   margin-bottom: 50px;
-  color: #333;
 }
 
 .cards-servicos {
@@ -178,47 +209,49 @@ html, main, section {
 }
 
 .card {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 12px;
   padding: 25px 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   flex: 1;
   min-width: 250px;
   max-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.18);
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
 }
 
-.card::before{
-  content:"";
-  position:absolute;
-  top:-100%;
-  left:-100%;
-  width:200%;
-  height:200%;
-  background:linear-gradient(
-  120deg,
-  transparent,
-  rgba(255,255,255,0.5),
-  transparent
+.card::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
   );
-  transform:rotate(25deg);
-  transition:0.6s;
+  transform: rotate(25deg);
+  transition: 0.6s;
 }
 
-.card:hover::before{
-  top:100%;
-  left:100%;
+.card:hover::before {
+  top: 100%;
+  left: 100%;
 }
 
 .card img {
@@ -230,12 +263,12 @@ html, main, section {
 .card h3 {
   font-size: 1.3rem;
   margin-bottom: 15px;
-  color: #007bff;
+  color: var(--azul-principal);
 }
 
 .card p {
   font-size: 1rem;
-  color: #555;
+  color: var(--texto-normal);
 }
 
 .servicos .observacao {
@@ -249,7 +282,7 @@ html, main, section {
 ========================== */
 
 .quem-somos {
-  background-color: #ffffff;
+  background-color: var(--fundo-branco);
   padding: 80px 30px;
 }
 
@@ -261,15 +294,52 @@ html, main, section {
 
 .quem-somos h2 {
   font-size: 2.2rem;
-  color: #007bff;
-  margin-bottom: 20px;
 }
 
 .slogan {
+  max-width: 750px;
+  margin: 40px auto 50px auto;
+  padding: 20px 25px;
+
   font-style: italic;
-  font-size: 1.2rem;
-  color: #ff0000;
-  margin-bottom: 50px;
+  font-size: 1.25rem;
+  line-height: 1.6;
+
+  color: #1f3c88;
+
+  background: #eef2f8;
+  border-left: 5px solid var(--laranja-destaque);
+  border-radius: 6px;
+
+  position: relative;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.35s ease;
+}
+
+.slogan:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
+}
+
+.slogan::before {
+  content: "“";
+  font-size: 40px;
+  position: absolute;
+  left: 10px;
+  top: -10px;
+  color: var(--laranja-destaque);
+  font-weight: bold;
+}
+
+.slogan::after {
+  content: "”";
+  font-size: 40px;
+  position: absolute;
+  right: 15px;
+  bottom: -20px;
+  color: var(--laranja-destaque);
+  font-weight: bold;
 }
 
 .sobre-nos {
@@ -288,13 +358,13 @@ html, main, section {
 
 .item h3 {
   font-size: 1.3rem;
-  color: #333;
   margin-bottom: 15px;
 }
 
-.item p, .item ul {
+.item p,
+.item ul {
   font-size: 1rem;
-  color: #555;
+  color: var(--texto-normal);
   line-height: 1.6;
 }
 
@@ -308,7 +378,7 @@ html, main, section {
 ========================== */
 
 .contato {
-  background-color: #f9f9f9;
+  background-color: var(--fundo-cinza);
   padding: 80px 30px;
 }
 
@@ -324,16 +394,16 @@ html, main, section {
   gap: 15px;
 }
 
-.form-group{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .form-group label {
   margin-bottom: 5px;
   font-weight: 500;
-  color: #333;
+  color: var(--titulo-principal);
 }
 
 .form-group input,
@@ -350,17 +420,18 @@ html, main, section {
 }
 
 #form-contato .btn {
-  background-color: #007bff;
+  background-color: var(--azul-principal);
   color: #fff;
   border: none;
   padding: 12px 25px;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 #form-contato .btn:hover {
-  background-color: #0056b3;
+  background-color: var(--azul-hover);
 }
 
 /* ==========================
@@ -378,7 +449,6 @@ html, main, section {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-
 }
 
 .whatsapp-button img {
@@ -395,15 +465,15 @@ html, main, section {
    Animação das seções
 ========================== */
 
-.animar{
-  opacity:0;
-  transform:translateY(40px);
-  transition:all .7s ease;
+.animar {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s ease;
 }
 
-.animar.aparecer{
-  opacity:1;
-  transform:translateY(0);
+.animar.aparecer {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ==========================
@@ -411,46 +481,42 @@ html, main, section {
 ========================== */
 
 @media (max-width: 992px) {
+  .container-hero {
+    flex-direction: column;
+    text-align: center;
+  }
 
-.container-hero{
-flex-direction:column;
-text-align:center;
-}
+  .cards-servicos {
+    justify-content: center;
+  }
 
-.cards-servicos{
-justify-content:center;
-}
-
-.sobre-nos{
-justify-content:center;
-}
-
+  .sobre-nos {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.header-inner{
-flex-direction:column;
-align-items:center;
-}
+  .menu ul {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+    text-align: center;
+  }
 
-.menu ul{
-flex-direction:column;
-gap:15px;
-margin-top:10px;
-text-align:center;
-}
+  .cards-servicos {
+    flex-direction: column;
+    align-items: center;
+  }
 
-.cards-servicos{
-flex-direction:column;
-align-items:center;
-}
-
-.sobre-nos{
-flex-direction:column;
-align-items:center;
-}
-
+  .sobre-nos {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 /* ==========================
@@ -458,7 +524,7 @@ align-items:center;
 ========================== */
 
 .footer {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #1f3c88, #3a86ff);
   color: #fff;
   width: 100%;
   padding: 45px 25px 20px;
@@ -545,11 +611,99 @@ align-items:center;
   color: #f1f1f1;
 }
 
-.footer-copy a{
-  color:#fff;
-  text-decoration:none;
+.footer-copy a {
+  color: #fff;
+  text-decoration: none;
 }
 
-.footer-copy a:hover{
-  text-decoration:underline;
+.footer-copy a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================
+   Linha decorativa nos títulos
+========================== */
+
+.servicos h2::after,
+.quem-somos h2::after {
+  content: "";
+  display: block;
+  width: 70px;
+  height: 4px;
+  background: var(--laranja-destaque);
+  margin: 15px auto 0;
+  border-radius: 3px;
+}
+
+/* ================= EVENTOS PROFISSIONAL ================= */
+
+.eventos {
+  padding: 80px 20px;
+  background: #f7f9fc;
+  overflow: hidden;
+  text-align: center;
+}
+
+.eventos h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #007bff;
+}
+
+/* Slider container */
+.eventos-slider {
+  overflow: hidden;
+  position: relative;
+}
+
+/* Track de cards */
+.eventos-track {
+  display: flex;
+  gap: 20px;
+  animation: scrollEventos 25s linear infinite;
+}
+
+/* Cards modernos e elegantes */
+.evento-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  min-width: 120px;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.evento-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.evento-card img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s;
+}
+
+.evento-card .evento-info {
+  padding: 10px;
+  transition: color 0.3s;
+}
+
+.evento-card h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+  color: #007bff;
+}
+
+.evento-card p {
+  font-size: 0.75rem;
+  color: #555;
+  line-height: 1.3;
 }
