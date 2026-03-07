@@ -1,6 +1,11 @@
 /* ==========================
    Reset e Corpo do Site
 ========================== */
+
+html{
+  scroll-behavior:smooth;
+}
+
 body {
   font-family: Montserrat, sans-serif;
   margin: 0;
@@ -18,30 +23,53 @@ html, main, section {
 /* ==========================
    Header e Logo
 ========================== */
+
 .header {
   background-color: #ffffff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  padding: 20px 0;
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .header-inner {
-  max-width: 1600px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.logo-header{
+  display:flex;
+  align-items:center;
+}
+
 .logo_abel {
-  height: 80px;
+  height: 60px;
   object-fit: contain;
   display: block;
+  transition: 0.3s;
+}
+
+/* efeito ao rolar */
+
+.header.scrolled{
+  padding:8px 0;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+.header.scrolled .logo_abel{
+  height:50px;
 }
 
 /* ==========================
    Menu de Navegação
 ========================== */
+
 .menu ul {
   list-style: none;
   display: flex;
@@ -64,6 +92,7 @@ html, main, section {
 /* ==========================
    Hero / Início
 ========================== */
+
 .inicio-hero {
   background-color: #ffffff;
   padding: 80px 30px;
@@ -123,6 +152,7 @@ html, main, section {
 /* ==========================
    Seção Nossos Serviços
 ========================== */
+
 .servicos {
   background-color: #f9f9f9;
   padding: 80px 30px;
@@ -158,13 +188,37 @@ html, main, section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.18);
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  top:-100%;
+  left:-100%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(
+  120deg,
+  transparent,
+  rgba(255,255,255,0.5),
+  transparent
+  );
+  transform:rotate(25deg);
+  transition:0.6s;
+}
+
+.card:hover::before{
+  top:100%;
+  left:100%;
 }
 
 .card img {
@@ -193,6 +247,7 @@ html, main, section {
 /* ==========================
    Seção Quem Somos
 ========================== */
+
 .quem-somos {
   background-color: #ffffff;
   padding: 80px 30px;
@@ -251,6 +306,7 @@ html, main, section {
 /* ==========================
    Contato / Formulário
 ========================== */
+
 .contato {
   background-color: #f9f9f9;
   padding: 80px 30px;
@@ -262,55 +318,22 @@ html, main, section {
   text-align: center;
 }
 
-.contato h2 {
-  font-size: 2.2rem;
-  color: #007bff;
-  margin-bottom: 20px;
-}
-
-.contato p {
-  margin-bottom: 40px;
-  color: #555;
-  font-size: 1rem;
-}
-
 #form-contato {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Grids do formulário */
-.endereco-grid-1 {
-  display: grid;
-  grid-template-columns: 150px 1fr 100px;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.endereco-grid-2 {
-  display: grid;
-  grid-template-columns: 150px 1.5fr 1.5fr 80px;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.data-horario-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-#campos-dinamicos .form-group {
-  margin-bottom: 15px;
+.form-group{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
 }
 
 .form-group label {
   margin-bottom: 5px;
   font-weight: 500;
   color: #333;
-  text-align: left;
 }
 
 .form-group input,
@@ -320,21 +343,10 @@ html, main, section {
   border-radius: 6px;
   border: 1px solid #ccc;
   width: 100%;
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0,123,255,0.5);
 }
 
 #form-contato textarea {
   min-height: 100px;
-  resize: vertical;
 }
 
 #form-contato .btn {
@@ -345,7 +357,6 @@ html, main, section {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 #form-contato .btn:hover {
@@ -353,13 +364,104 @@ html, main, section {
 }
 
 /* ==========================
+   WhatsApp
+========================== */
+
+.whatsapp-button {
+  position: fixed;
+  bottom: 35px;
+  right: 35px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+}
+
+.whatsapp-button img {
+  width: 50px;
+  height: 50px;
+}
+
+.whatsapp-button:hover {
+  transform: scale(1.1);
+  transition: 0.3s;
+}
+
+/* ==========================
+   Animação das seções
+========================== */
+
+.animar{
+  opacity:0;
+  transform:translateY(40px);
+  transition:all .7s ease;
+}
+
+.animar.aparecer{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ==========================
+   Responsividade
+========================== */
+
+@media (max-width: 992px) {
+
+.container-hero{
+flex-direction:column;
+text-align:center;
+}
+
+.cards-servicos{
+justify-content:center;
+}
+
+.sobre-nos{
+justify-content:center;
+}
+
+}
+
+@media (max-width: 768px) {
+
+.header-inner{
+flex-direction:column;
+align-items:center;
+}
+
+.menu ul{
+flex-direction:column;
+gap:15px;
+margin-top:10px;
+text-align:center;
+}
+
+.cards-servicos{
+flex-direction:column;
+align-items:center;
+}
+
+.sobre-nos{
+flex-direction:column;
+align-items:center;
+}
+
+}
+
+/* ==========================
    Rodapé
 ========================== */
+
 .footer {
   background-color: #007bff;
   color: #fff;
   width: 100%;
-  padding: 50px 20px 20px 20px;
+  padding: 45px 25px 20px;
 }
 
 .footer-top {
@@ -379,13 +481,11 @@ html, main, section {
 .footer-column h4 {
   font-size: 1.2rem;
   margin-bottom: 15px;
-  color: #fff;
 }
 
 .footer-column ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .footer-column ul li {
@@ -395,11 +495,11 @@ html, main, section {
 .footer-column ul li a {
   color: #fff;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: 0.3s;
 }
 
 .footer-column ul li a:hover {
-  color: #ffcc00;
+  color: #ffd000;
 }
 
 .footer-column p {
@@ -408,125 +508,48 @@ html, main, section {
   line-height: 1.4;
 }
 
+/* redes sociais */
+
 .social-icons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 10px;
 }
 
 .logo {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
-  display: inline-block;
   transition: transform 0.3s;
 }
 
 .logo:hover {
-  transform: scale(1.2);
+  transform: scale(1.15);
   cursor: pointer;
 }
 
+/* ícones de contato */
+
 .logo2 {
-  width: 24px;
+  width: 20px;
   vertical-align: middle;
   margin-right: 8px;
 }
 
+/* copyright */
+
 .footer-copy {
   text-align: center;
-  margin-top: 30px;
-  font-size: 0.95rem;
+  margin-top: 35px;
+  font-size: 0.9rem;
   color: #f1f1f1;
 }
 
-/* ==========================
-   Responsividade
-========================== */
-@media (max-width: 992px) {
-  .container-hero { flex-direction: column; text-align: center; }
-  .hero-img img { max-width: 300px; margin-bottom: 20px; }
-  .cards-servicos { justify-content: center; }
-  .sobre-nos { justify-content: center; }
-  .footer-top { flex-direction: column; align-items: center; text-align: center; gap: 30px; }
-  .footer-column { min-width: 100%; }
+.footer-copy a{
+  color:#fff;
+  text-decoration:none;
 }
 
-@media (max-width: 768px) {
-  .header-inner { flex-direction: column; align-items: center; padding: 0 15px; }
-  .menu ul { flex-direction: column; gap: 15px; margin-top: 10px; text-align: center; }
-  .hero-text h1 { font-size: 2rem; }
-  .hero-text p { font-size: 1rem; }
-  .hero-text .btn { font-size: 0.95rem; padding: 10px 20px; }
-  .cards-servicos { flex-direction: column; gap: 20px; align-items: center; }
-  .card { max-width: 100%; }
-  .sobre-nos { flex-direction: column; align-items: center; }
-  .item { max-width: 100%; }
-  .contato .container { padding: 0 15px; }
-}
-
-/* ==========================
-   CAMPOS EM LINHA - ENDEREÇO
-========================== */
-
-.endereco-grid-1,
-.endereco-grid-2,
-.data-hora-grid {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
-/* CEP | Logradouro | Número */
-.endereco-grid-1 {
-  grid-template-columns: 140px 1fr 100px;
-}
-
-/* Complemento | Bairro | Cidade | UF */
-.endereco-grid-2 {
-  grid-template-columns: 1fr 2fr 2fr 90px;
-}
-
-/* Data | Hora Início | Hora Fim */
-.data-hora-grid {
-  grid-template-columns: 1fr 150px 150px;
-}
-
-/* Espaçamento entre blocos */
-.bloco-form {
-  margin-bottom: 20px;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .endereco-grid-1,
-  .endereco-grid-2,
-  .data-hora-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ==========================
-   LOADER CEP
-========================== */
-
-.cep-wrapper {
-  position: relative;
-}
-
-.loader-cep {
-  position: absolute;
-  right: 10px;
-  top: 38px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #ccc;
-  border-top: 2px solid #007bff;
-  border-radius: 50%;
-  animation: girar 0.6s linear infinite;
-  display: none;
-}
-
-@keyframes girar {
-  to { transform: rotate(360deg); }
+.footer-copy a:hover{
+  text-decoration:underline;
 }
