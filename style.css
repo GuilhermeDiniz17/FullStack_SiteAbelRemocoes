@@ -570,7 +570,6 @@ h3 {
   .social-icons {
     justify-content: center;
   }
-}
 
 /* ==========================
    Rodapé
@@ -680,8 +679,3 @@ h3 {
   border-radius: 3px;
 }
 
-.footer-column2 {
-  display: none;
-  flex: 1;
-  min-width: 200px;
-}
