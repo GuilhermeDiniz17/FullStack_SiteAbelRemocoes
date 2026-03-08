@@ -181,6 +181,11 @@ h3 {
   background-color: var(--azul-hover);
 }
 
+.atendimento-24h {
+  color: red;
+  font-weight: 600;
+}
+
 /* ==========================
    Seção Nossos Serviços
 ========================== */
