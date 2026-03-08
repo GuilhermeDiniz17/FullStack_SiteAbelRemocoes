@@ -115,9 +115,23 @@ function aplicarMascaraCEP() {
 }
 
 // ===============================
+// MENU HAMBURGER
+// ===============================
+function initMenuHamburger() {
+  const toggle = document.querySelector(".menu-toggle");
+  const menu = document.querySelector(".menu ul");
+
+  toggle.addEventListener("click", () => {
+    menu.classList.toggle("active");
+  });
+}
+
+// ===============================
 // DOM READY
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
+  initMenuHamburger();
+
   const servicoSelect = document.getElementById("servico");
   const camposDinamicos = document.getElementById("campos-dinamicos");
   const form = document.getElementById("form-contato");

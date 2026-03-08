@@ -1,21 +1,17 @@
 /* ==========================
    Variáveis Globais
 ========================== */
-
 :root {
   /* cores principais */
-
   --azul-principal: #007bff;
   --azul-hover: #0056b3;
   --laranja-destaque: #ff7b00;
 
   /* textos */
-
   --titulo-principal: #333;
   --texto-normal: #555;
 
   /* fundos */
-
   --fundo-branco: #ffffff;
   --fundo-cinza: #f9f9f9;
   --fundo-site: #f5f5f5;
@@ -24,7 +20,6 @@
 /* ==========================
    Reset e Corpo do Site
 ========================== */
-
 html {
   scroll-behavior: smooth;
 }
@@ -43,8 +38,6 @@ main {
   flex: 1;
 }
 
-/* títulos padronizados */
-
 h1,
 h2,
 h3 {
@@ -54,7 +47,6 @@ h3 {
 /* ==========================
    Header e Logo
 ========================== */
-
 .header {
   background-color: var(--fundo-branco);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -88,8 +80,6 @@ h3 {
   transition: height 0.3s ease;
 }
 
-/* efeito ao rolar */
-
 .header.scrolled {
   padding: 8px 0;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -102,7 +92,6 @@ h3 {
 /* ==========================
    Menu de Navegação
 ========================== */
-
 .menu ul {
   list-style: none;
   display: flex;
@@ -122,10 +111,16 @@ h3 {
   color: var(--laranja-destaque);
 }
 
+/* Hamburger menu */
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
 /* ==========================
    Hero / Início
 ========================== */
-
 .inicio-hero {
   background-color: var(--fundo-branco);
   padding: 80px 30px;
@@ -143,7 +138,7 @@ h3 {
 
 .hero-img img {
   width: 100%;
-  max-width: 400px;
+  max-width: 300px;
   object-fit: contain;
 }
 
@@ -189,7 +184,6 @@ h3 {
 /* ==========================
    Seção Nossos Serviços
 ========================== */
-
 .servicos {
   background-color: var(--fundo-cinza);
   padding: 80px 30px;
@@ -285,7 +279,6 @@ h3 {
 /* ==========================
    Seção Quem Somos
 ========================== */
-
 .quem-somos {
   background-color: var(--fundo-branco);
   padding: 80px 30px;
@@ -381,7 +374,6 @@ h3 {
 /* ==========================
    Contato / Formulário
 ========================== */
-
 .contato {
   background-color: var(--fundo-cinza);
   padding: 80px 30px;
@@ -442,7 +434,6 @@ h3 {
 /* ==========================
    WhatsApp
 ========================== */
-
 .whatsapp-button {
   position: fixed;
   bottom: 35px;
@@ -469,7 +460,6 @@ h3 {
 /* ==========================
    Animação das seções
 ========================== */
-
 .animar {
   opacity: 0;
   transform: translateY(40px);
@@ -484,7 +474,6 @@ h3 {
 /* ==========================
    Responsividade
 ========================== */
-
 @media (max-width: 992px) {
   .container-hero {
     flex-direction: column;
@@ -502,15 +491,27 @@ h3 {
 
 @media (max-width: 768px) {
   .header-inner {
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    position: relative;
+  }
+
+  .menu-toggle {
+    display: block;
+    align-self: flex-end;
   }
 
   .menu ul {
     flex-direction: column;
     gap: 15px;
     margin-top: 10px;
-    text-align: center;
+    width: 100%;
+    display: none;
+  }
+
+  .menu ul.active {
+    display: flex;
   }
 
   .cards-servicos {
@@ -522,12 +523,27 @@ h3 {
     flex-direction: column;
     align-items: center;
   }
+
+  .hero-img img {
+    max-width: 220px;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .whatsapp-button {
+    right: 60px;
+  }
 }
 
 /* ==========================
    Rodapé
 ========================== */
-
 .footer {
   background: linear-gradient(135deg, #1f3c88, #3a86ff);
   color: #fff;
@@ -579,8 +595,6 @@ h3 {
   line-height: 1.4;
 }
 
-/* redes sociais */
-
 .social-icons {
   display: flex;
   gap: 12px;
@@ -599,15 +613,11 @@ h3 {
   cursor: pointer;
 }
 
-/* ícones de contato */
-
 .logo2 {
   width: 20px;
   vertical-align: middle;
   margin-right: 8px;
 }
-
-/* copyright */
 
 .footer-copy {
   text-align: center;
@@ -628,7 +638,6 @@ h3 {
 /* ==========================
    Linha decorativa nos títulos
 ========================== */
-
 .servicos h2::after,
 .quem-somos h2::after {
   content: "";
@@ -638,77 +647,4 @@ h3 {
   background: var(--laranja-destaque);
   margin: 15px auto 0;
   border-radius: 3px;
-}
-
-/* ================= EVENTOS PROFISSIONAL ================= */
-
-.eventos {
-  padding: 80px 20px;
-  background: #f7f9fc;
-  overflow: hidden;
-  text-align: center;
-}
-
-.eventos h2 {
-  font-size: 2rem;
-  margin-bottom: 40px;
-  color: #007bff;
-}
-
-/* Slider container */
-.eventos-slider {
-  overflow: hidden;
-  position: relative;
-}
-
-/* Track de cards */
-.eventos-track {
-  display: flex;
-  gap: 20px;
-  animation: scrollEventos 25s linear infinite;
-}
-
-/* Cards modernos e elegantes */
-.evento-card {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  min-width: 120px;
-  overflow: hidden;
-  flex-shrink: 0;
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
-  cursor: pointer;
-}
-
-.evento-card:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-.evento-card img {
-  width: 100%;
-  height: 80px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s;
-}
-
-.evento-card .evento-info {
-  padding: 10px;
-  transition: color 0.3s;
-}
-
-.evento-card h3 {
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 3px;
-  color: #007bff;
-}
-
-.evento-card p {
-  font-size: 0.75rem;
-  color: #555;
-  line-height: 1.3;
 }
