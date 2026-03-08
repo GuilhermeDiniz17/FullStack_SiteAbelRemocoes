@@ -489,13 +489,12 @@ h3 {
   /* Menu hamburger */
 
   .logo_abel {
-    margin-left: 20px;
+    margin-left: 60px;
   }
 
   .menu-toggle {
     display: block;
     cursor: pointer;
-    margin-right: 20px;
   }
 
   .menu ul {
