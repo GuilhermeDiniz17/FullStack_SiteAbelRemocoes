@@ -51,9 +51,11 @@ h3 {
   background-color: var(--fundo-branco);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 12px 0;
-  position: sticky;
+  position: fixed; /* fixa na tela */
   top: 0;
-  z-index: 1000;
+  left: 0;
+  width: 100%; /* ocupa toda a largura */
+  z-index: 1000; /* acima do conteúdo */
   transition:
     padding 0.3s ease,
     box-shadow 0.3s ease;
@@ -129,6 +131,7 @@ h3 {
 .container-hero {
   max-width: 1600px;
   margin: 0 auto;
+  margin-top: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -474,51 +477,58 @@ h3 {
 /* ==========================
    Responsividade
 ========================== */
-@media (max-width: 992px) {
-  .container-hero {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .cards-servicos {
-    justify-content: center;
-  }
-
-  .sobre-nos {
-    justify-content: center;
-  }
-}
-
 @media (max-width: 768px) {
+  /* Header */
   .header-inner {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    position: relative;
+    padding: 5px 10px;
   }
 
+  /* Menu hamburger */
   .menu-toggle {
     display: block;
-    align-self: flex-end;
+    cursor: pointer;
+    margin-right: 50px;
   }
 
   .menu ul {
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-    width: 100%;
     display: none;
+    flex-direction: column;
+    width: 100vw;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--fundo-branco);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    gap: 0; /* remove o gap */
+  }
+
+  .menu ul li {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0; /* vertical uniforme */
+    margin: 0; /* remove margem extra */
+  }
+
+  .menu ul li:last-child {
+    border-bottom: none;
   }
 
   .menu ul.active {
     display: flex;
   }
 
-  .cards-servicos {
+  /* Hero / Seções */
+  .container-hero {
     flex-direction: column;
-    align-items: center;
+    text-align: center;
   }
 
+  .cards-servicos,
   .sobre-nos {
     flex-direction: column;
     align-items: center;
@@ -537,7 +547,24 @@ h3 {
   }
 
   .whatsapp-button {
+    position: fixed;
     right: 60px;
+  }
+
+  /* Rodapé */
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-column {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .social-icons {
+    justify-content: center;
   }
 }
 
@@ -647,4 +674,10 @@ h3 {
   background: var(--laranja-destaque);
   margin: 15px auto 0;
   border-radius: 3px;
+}
+
+.footer-column2 {
+  display: none;
+  flex: 1;
+  min-width: 200px;
 }

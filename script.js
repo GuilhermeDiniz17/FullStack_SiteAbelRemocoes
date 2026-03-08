@@ -1,24 +1,7 @@
 // ===============================
-// FIREBASE
+// CACHE CEP
 // ===============================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "abel-remocoes.firebaseapp.com",
-  projectId: "abel-remocoes",
-  storageBucket: "abel-remocoes.firebasestorage.app",
-  messagingSenderId: "678084659954",
-  appId: "1:678084659954:web:c63e558b0749e0ab5e9e6b",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const cacheCEP = {};
 
 // ===============================
 // FUNÇÕES AUXILIARES
@@ -33,11 +16,6 @@ function validarEmail(email) {
 }
 
 // ===============================
-// CACHE CEP
-// ===============================
-const cacheCEP = {};
-
-// ===============================
 // BUSCAR CEP
 // ===============================
 async function buscarCEP(cepInput, prefixo) {
@@ -50,22 +28,10 @@ async function buscarCEP(cepInput, prefixo) {
   const uf = document.getElementById(prefixo + "_uf");
 
   function preencherCampos(dados) {
-    if (logradouro) {
-      logradouro.value = dados.logradouro || "";
-      logradouro.readOnly = true;
-    }
-    if (bairro) {
-      bairro.value = dados.bairro || "";
-      bairro.readOnly = true;
-    }
-    if (cidade) {
-      cidade.value = dados.localidade || "";
-      cidade.readOnly = true;
-    }
-    if (uf) {
-      uf.value = dados.uf || "";
-      uf.disabled = true;
-    }
+    if (logradouro) logradouro.value = dados.logradouro || "";
+    if (bairro) bairro.value = dados.bairro || "";
+    if (cidade) cidade.value = dados.localidade || "";
+    if (uf) uf.value = dados.uf || "";
   }
 
   if (cacheCEP[cep]) {
@@ -98,10 +64,8 @@ function aplicarMascaraCEP() {
   campos.forEach((campo) => {
     campo.addEventListener("input", function () {
       let valor = this.value.replace(/\D/g, "");
-
       if (valor.length > 8) valor = valor.substring(0, 8);
       if (valor.length > 5) valor = valor.replace(/^(\d{5})(\d)/, "$1-$2");
-
       this.value = valor;
     });
 
@@ -117,21 +81,25 @@ function aplicarMascaraCEP() {
 // ===============================
 // MENU HAMBURGER
 // ===============================
-function initMenuHamburger() {
-  const toggle = document.querySelector(".menu-toggle");
-  const menu = document.querySelector(".menu ul");
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.getElementById("menu-toggle");
+  const menuList = document.getElementById("menu-list");
 
-  toggle.addEventListener("click", () => {
-    menu.classList.toggle("active");
-  });
-}
+  if (menuToggle && menuList) {
+    menuToggle.addEventListener("click", () =>
+      menuList.classList.toggle("active"),
+    );
+
+    menuList.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => menuList.classList.remove("active"));
+    });
+  }
+});
 
 // ===============================
-// DOM READY
+// FORMULÁRIO + CAMPOS DINÂMICOS
 // ===============================
 document.addEventListener("DOMContentLoaded", () => {
-  initMenuHamburger();
-
   const servicoSelect = document.getElementById("servico");
   const camposDinamicos = document.getElementById("campos-dinamicos");
   const form = document.getElementById("form-contato");
@@ -165,25 +133,16 @@ document.addEventListener("DOMContentLoaded", () => {
         <textarea name="mensagem-evento"></textarea>
       </div>
     `,
-
     "remocao-hospitalar": `
       <div class="linha">
         <div class="form-group">
           <label>CEP:</label>
-          <input type="text" 
-                 id="origem_cep" 
-                 class="campo-cep" 
-                 data-prefixo="origem"
-                 maxlength="9"
-                 placeholder="00000-000"
-                 required>
+          <input type="text" id="origem_cep" class="campo-cep" data-prefixo="origem" maxlength="9" placeholder="00000-000" required>
         </div>
-
         <div class="form-group">
           <label>Logradouro:</label>
           <input type="text" id="origem_logradouro" required>
         </div>
-
         <div class="form-group">
           <label>Número:</label>
           <input type="text" name="origem-numero">
@@ -195,12 +154,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <label>Bairro:</label>
           <input type="text" id="origem_bairro" required>
         </div>
-
         <div class="form-group">
           <label>Cidade:</label>
           <input type="text" id="origem_cidade" required>
         </div>
-
         <div class="form-group">
           <label>UF:</label>
           <select id="origem_uf" required>
@@ -218,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <textarea name="mensagem-hospital"></textarea>
       </div>
     `,
-
     "remocao-paciente": `
       <div class="form-group">
         <label>Nome do Paciente:</label>
@@ -242,14 +198,14 @@ document.addEventListener("DOMContentLoaded", () => {
     aplicarMascaraCEP();
   }
 
-  servicoSelect.addEventListener("change", (e) => {
-    atualizarCampos(e.target.value);
-  });
+  servicoSelect.addEventListener("change", (e) =>
+    atualizarCampos(e.target.value),
+  );
 
   // ===============================
-  // SUBMIT
+  // SUBMIT SIMPLES (SEM SALVAR)
   // ===============================
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const dados = Object.fromEntries(new FormData(form));
@@ -270,32 +226,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    const dadosComProtocolo = {
-      ...dados,
-      protocolo,
-      dataEnvio: new Date(),
-      status: "novo",
-    };
+    // Exibe resultado no console (teste)
+    console.log("Orçamento válido!", { protocolo, ...dados });
 
-    try {
-      await addDoc(collection(db, "orcamentos"), dadosComProtocolo);
+    // Se quiser enviar para WhatsApp (simulação)
+    let mensagem = `🚑 Novo Orçamento - Protocolo: ${protocolo}\n`;
+    mensagem += `Nome: ${dados.nome || ""}\n`;
+    mensagem += `Telefone: ${dados.telefone || ""}\n`;
+    mensagem += `Email: ${dados.email || ""}\n`;
+    mensagem += `Serviço: ${dados.servico || ""}\n`;
+    window.open(
+      `https://wa.me/5511952716370?text=${encodeURIComponent(mensagem)}`,
+      "_blank",
+    );
 
-      let mensagem = `🚑 *Novo Orçamento - Abel Remoções*\n`;
-      mensagem += `Protocolo: ${protocolo}\n\n`;
-      mensagem += `Nome: ${dados.nome}\n`;
-      mensagem += `Telefone: ${dados.telefone}\n`;
-      mensagem += `Email: ${dados.email}\n`;
-      mensagem += `Serviço: ${dados.servico}\n`;
-
-      const url = `https://wa.me/5511952716370?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, "_blank");
-
-      alert("Orçamento enviado com sucesso! Protocolo: " + protocolo);
-
-      form.reset();
-      camposDinamicos.innerHTML = "";
-    } catch (error) {
-      alert("Erro ao enviar orçamento.");
-    }
+    alert("Formulário válido! Protocolo: " + protocolo);
+    form.reset();
+    camposDinamicos.innerHTML = "";
   });
 });
